@@ -1,8 +1,6 @@
 module StringCalc exposing (..)
 
 add : String -> Int
-add numbers =
-  if numbers == "1" then
-    1
-  else
-    0
+add numbers = String.toInt numbers
+  |> Result.toMaybe
+  |> Maybe.withDefault 0
