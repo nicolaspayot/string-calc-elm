@@ -4,8 +4,8 @@
     "repository": "https://github.com/nicolaspayot/string-calc-elm.git",
     "license": "MIT",
     "source-directories": [
-        "..",
-        "."
+        "../src",
+        "../tests"
     ],
     "exposed-modules": [],
     "dependencies": {
