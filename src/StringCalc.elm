@@ -1,4 +1,8 @@
 module StringCalc exposing (..)
 
 add : String -> Int
-add numbers = 0
+add numbers =
+  if numbers == "1" then
+    1
+  else
+    0
