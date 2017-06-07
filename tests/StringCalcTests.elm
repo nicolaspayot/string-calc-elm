@@ -6,8 +6,16 @@ import Fuzz exposing (Fuzzer)
 
 import StringCalc
 
-oneNumber : Fuzzer Int
-oneNumber = Fuzz.intRange 0 100
+oneNumber : Fuzzer String
+oneNumber =
+  Fuzz.map
+    (\randomInt -> toString randomInt)
+    (Fuzz.intRange 0 100)
+
+toInt : String -> Int
+toInt str = String.toInt str
+  |> Result.toMaybe
+  |> Maybe.withDefault 0
 
 suite : Test
 suite =
@@ -19,7 +27,5 @@ suite =
           Expect.equal (StringCalc.add "1") 1
 
       , fuzz (oneNumber) "should return number n with 'n' as string" <|\numbers ->
-          toString numbers
-            |> StringCalc.add
-            |> Expect.equal numbers
+          Expect.equal (StringCalc.add numbers) (toInt numbers)
       ]
