@@ -28,4 +28,7 @@ suite =
 
       , fuzz (oneNumber) "should return number n with 'n' as string" <|\numbers ->
           Expect.equal (StringCalc.add numbers) (toInt numbers)
+
+      , test "should return 3 with '1,2' as string" <|\() ->
+          Expect.equal (StringCalc.add "1,2") 3
       ]
