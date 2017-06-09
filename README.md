@@ -19,5 +19,5 @@ npm install -g elm-test
 ## Usage
 
 ```bash
-elm test
+elm test [--watch]
 ```
