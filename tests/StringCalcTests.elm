@@ -27,4 +27,7 @@ suite =
 
       , test "should return 45 with '1,2,3,4,5,6,7,8,9' as string" <|\() ->
           Expect.equal (StringCalc.add "1,2,3,4,5,6,7,8,9") 45
+
+      , test "should return 6 with '1\n2,3' as string" <|\() ->
+          Expect.equal (StringCalc.add "1\n2,3") 6
       ]
