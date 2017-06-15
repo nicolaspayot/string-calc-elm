@@ -4,7 +4,8 @@ import List
 
 add : String -> Int
 add numbers =
-  splitWithSeparator numbers ","
+  splitWithSeparator numbers "\n"
+  |> List.concatMap (\numberItem -> splitWithSeparator numberItem ",")
   |> List.map toInt
   |> List.sum
 
