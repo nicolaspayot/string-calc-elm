@@ -1,20 +1,20 @@
 module StringCalc exposing (..)
 
 import List
+import Regex
+
+separator = Regex.regex "\\n|,"
 
 add : String -> Int
 add numbers =
-  splitWithSeparator numbers "\n"
-  |> List.concatMap (\numberItem -> splitWithSeparator numberItem ",")
+  splitWithSeparator numbers separator
   |> List.map toInt
   |> List.sum
 
-splitWithSeparator : String -> String -> List String
 splitWithSeparator numbers separator =
-  if String.contains separator numbers then
-    String.split separator numbers
-  else
-    numbers :: []
+  Regex.split Regex.All separator numbers
+
+-- ##### Utils #####
 
 toInt : String -> Int
 toInt str = String.toInt str

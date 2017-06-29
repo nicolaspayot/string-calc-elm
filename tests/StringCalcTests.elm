@@ -5,11 +5,6 @@ import Expect
 
 import StringCalc
 
-toInt : String -> Int
-toInt str = String.toInt str
-  |> Result.toMaybe
-  |> Maybe.withDefault 0
-
 suite : Test
 suite =
     describe "The string calculator"
