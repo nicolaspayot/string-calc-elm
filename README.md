@@ -1,8 +1,10 @@
 # string-calc-elm
 String Calculator Kata with Elm
 
-## Install
+## Rules
+http://osherove.com/tdd-kata-1/
 
+## Install
 1. Install Elm:
 ```bash
 npm install -g elm
@@ -17,7 +19,6 @@ npm install -g elm-test
 ```
 
 ## Usage
-
 ```bash
 elm test [--watch]
 ```
