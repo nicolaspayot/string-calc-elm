@@ -28,4 +28,7 @@ suite =
 
       , test "should return 3 with '//;\n1;2' as string" <|\() ->
           Expect.equal (StringCalc.add "//;\n1;2") 3
+
+      , test "should return 6 with '//$$\n1$$2$$3' as string" <|\() ->
+          Expect.equal (StringCalc.add "//$$\n1$$2$$3") 6
       ]

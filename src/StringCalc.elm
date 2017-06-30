@@ -4,42 +4,52 @@ import List
 import Regex
 
 defaultSeparator = Regex.regex "\\n|,"
-customSeparator = Regex.regex "^//(.)\\n"
+customSeparator = Regex.regex "^//(.+)\\n"
 
 add : String -> Int
 add numbers =
-  if startsWithSeparator numbers customSeparator then
+  extractNumbersList numbers
+  |> List.map toInt
+  |> List.sum
+
+extractNumbersList : String -> List String
+extractNumbersList numbers =
+  if startsWithSeparator numbers then
     let
-      separator = extractSeparator numbers customSeparator
+      separator = extractCustomSeparator numbers
+      justNumbers = removeSeparatorPattern numbers
     in
-      splitWithSeparator (removeSeparatorPattern numbers) (Regex.regex separator)
-      |> List.map toInt
-      |> List.sum
+      splitWithString justNumbers separator
   else
-    splitWithSeparator numbers defaultSeparator
-    |> List.map toInt
-    |> List.sum
+    splitWithRegex numbers
 
-startsWithSeparator : String -> Regex.Regex -> Bool
-startsWithSeparator numbers separator =
-  Regex.contains separator numbers
+startsWithSeparator : String -> Bool
+startsWithSeparator numbers =
+  Regex.contains customSeparator numbers
 
-extractSeparator numbers separator =
-  Regex.find (Regex.AtMost 1) separator numbers
+extractCustomSeparator : String -> String
+extractCustomSeparator numbers =
+  Regex.find (Regex.AtMost 1) customSeparator numbers
   |> List.concatMap (\match -> match.submatches)
   |> List.head
   |> unwrap
   |> unwrap
 
+removeSeparatorPattern : String -> String
 removeSeparatorPattern =
   Regex.replace (Regex.AtMost 1) customSeparator (\_ -> "")
 
-splitWithSeparator : String -> Regex.Regex -> List String
-splitWithSeparator numbers separator =
-  Regex.split Regex.All separator numbers
+splitWithString : String -> String -> List String
+splitWithString numbers separator =
+  String.split separator numbers
+
+splitWithRegex : String -> List String
+splitWithRegex numbers =
+  Regex.split Regex.All defaultSeparator numbers
 
 -- ##### Utils #####
 
+unwrap : Maybe.Maybe a -> a
 unwrap wrappedVal =
   case wrappedVal of
     Just val -> val
