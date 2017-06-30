@@ -34,4 +34,7 @@ suite =
 
       , test "should return 'Negatives not allowed: -1' with '-1,2,3' as string" <|\() ->
           Expect.equal (StringCalc.add "-1,2,3") (Result.Err "Negatives not allowed: -1")
+
+      , test "should return 'Negatives not allowed: -2, -3' with '1,-2,-3,4' as string" <|\() ->
+          Expect.equal (StringCalc.add "1,-2,-3,4") (Result.Err "Negatives not allowed: -2, -3")
       ]
