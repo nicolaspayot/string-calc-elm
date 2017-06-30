@@ -6,13 +6,22 @@ import Regex
 defaultSeparator = Regex.regex "\\n|,"
 customSeparator = Regex.regex "^//(.+)\\n"
 
-add : String -> Int
+add : String -> Result String Int
 add numbers =
-  extractNumbersList numbers
-  |> List.map toInt
-  |> List.sum
+  let
+    numbersList = extractNumbersList numbers
+  in
+    if containsNegative numbersList then
+      Result.Err "Negatives not allowed: -1"
+    else
+      List.sum numbersList
+      |> Result.Ok
 
-extractNumbersList : String -> List String
+containsNegative : List Int -> Bool
+containsNegative numbers =
+  List.any (\n -> n < 0) numbers
+
+extractNumbersList : String -> List Int
 extractNumbersList numbers =
   if startsWithSeparator numbers then
     let
@@ -20,8 +29,10 @@ extractNumbersList numbers =
       justNumbers = removeSeparatorPattern numbers
     in
       splitWithString justNumbers separator
+      |> List.map toInt
   else
     splitWithRegex numbers
+    |> List.map toInt
 
 startsWithSeparator : String -> Bool
 startsWithSeparator numbers =
