@@ -12,14 +12,12 @@ add numbers =
     numbersList = extractNumbersList numbers
   in
     if containsNegative numbersList then
-      Result.Err "Negatives not allowed: -1"
+      extractNegatives numbersList
+      |> String.join ", "
+      |> displayNegatives
     else
       List.sum numbersList
       |> Result.Ok
-
-containsNegative : List Int -> Bool
-containsNegative numbers =
-  List.any (\n -> n < 0) numbers
 
 extractNumbersList : String -> List Int
 extractNumbersList numbers =
@@ -33,6 +31,20 @@ extractNumbersList numbers =
   else
     splitWithRegex numbers
     |> List.map toInt
+
+containsNegative : List Int -> Bool
+containsNegative numbers =
+  List.any (\n -> n < 0) numbers
+
+extractNegatives : List Int -> List String
+extractNegatives numbers =
+  List.filter (\n -> n < 0) numbers
+  |> List.map toString
+
+displayNegatives : String -> Result String value
+displayNegatives negatives =
+  String.concat ["Negatives not allowed: ", negatives]
+  |> Result.Err
 
 startsWithSeparator : String -> Bool
 startsWithSeparator numbers =
