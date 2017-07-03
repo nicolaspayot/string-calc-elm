@@ -9,28 +9,32 @@ customSeparator = Regex.regex "^//(.+)\\n"
 add : String -> Result String Int
 add numbers =
   let
-    numbersList = extractNumbersList numbers
+    numbersList = numbers
+    |> extractNumbers
+    |> numbersToInt
   in
     if containsNegative numbersList then
       extractNegatives numbersList
       |> String.join ", "
-      |> displayNegatives
+      |> concatNegatives
     else
       List.sum numbersList
       |> Result.Ok
 
-extractNumbersList : String -> List Int
-extractNumbersList numbers =
+extractNumbers : String -> List String
+extractNumbers numbers =
   if startsWithSeparator numbers then
     let
       separator = extractCustomSeparator numbers
       justNumbers = removeSeparatorPattern numbers
     in
       splitWithString justNumbers separator
-      |> List.map toInt
   else
     splitWithRegex numbers
-    |> List.map toInt
+
+numbersToInt : List String -> List Int
+numbersToInt numbers =
+  List.map toInt numbers
 
 containsNegative : List Int -> Bool
 containsNegative numbers =
@@ -41,8 +45,8 @@ extractNegatives numbers =
   List.filter (\n -> n < 0) numbers
   |> List.map toString
 
-displayNegatives : String -> Result String value
-displayNegatives negatives =
+concatNegatives : String -> Result String value
+concatNegatives negatives =
   String.concat ["Negatives not allowed: ", negatives]
   |> Result.Err
 
