@@ -84,5 +84,4 @@ unwrap wrappedVal =
 
 toInt : String -> Int
 toInt str = String.toInt str
-  |> Result.toMaybe
-  |> Maybe.withDefault 0
+  |> Result.withDefault 0
